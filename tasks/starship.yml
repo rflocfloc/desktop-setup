@@ -1,0 +1,14 @@
+---
+- name: starship | Add copr (Fedora)
+  become: true
+  community.general.copr:
+    name: atim/starship
+    state: enabled
+  when: ansible_distribution == "Fedora"
+
+- name: starship | Install starship
+  become: true
+  ansible.builtin.package:
+    update_cache: true
+    name: starship
+    state: present

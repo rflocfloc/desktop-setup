@@ -1,0 +1,19 @@
+{{ ansible_managed | comment }}
+
+[user]
+   name = {{ git_user_name }}
+   email = {{ git_user_email }}
+
+[color]
+    ui  = auto
+
+[pretty]
+    better-oneline = "format:%C(auto)%h%d %s %Cblue[%cn]"
+
+[alias]
+    {% for item in git_opts_alias %}
+    {{ item.alias }}    = {{ item.value }}
+    {% endfor %}
+
+[init]
+    defaultBranch = {{ git_opts_defaultBranch }}

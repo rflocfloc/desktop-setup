@@ -1,0 +1,17 @@
+---
+
+git_manage_config: false
+
+git_user_name: ""
+git_user_email: ""
+
+git_opts_defaultBranch: main
+git_opts_alias:
+  - {alias: tree, value: log --pretty=better-oneline --all --graph}
+  - {alias: ls, value: log --pretty=better-oneline}
+  - {alias: ll, value: log --pretty=better-oneline --numstat}
+  - {alias: details, value: '!f() { git ll "$1"^.."$1"; }; f'}
+
+git_manage_project_dirs: false
+git_project_dirs:
+  - "~/Projects"

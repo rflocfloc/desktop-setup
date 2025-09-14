@@ -1,0 +1,46 @@
+---
+- name: repos | Archlinux | Install git and base-devel for AUR helper
+  tags: [ repos ]
+  become: true
+  community.general.pacman:
+    name:
+      - git
+      - base-devel
+    state: present
+
+- name: repos | Archlinux | Check if yay is already installed
+  tags: [ repos ]
+  ansible.builtin.stat:
+    path: "/usr/bin/yay"
+  register: yay_check
+
+- name: repos | Archlinux | Clone yay repository
+  tags: [ repos ]
+  ansible.builtin.git:
+    repo: 'https://aur.archlinux.org/yay.git'
+    dest: "~/Downloads/yay"
+    update: true
+  when: not yay_check.stat.exists
+
+- name: repos | Archlinux | Build and install yay
+  tags: [ repos ]
+  become: true
+  become_user: "{{ ansible_user }}"
+  ansible.builtin.command: "makepkg -sfi --noconfirm"
+  args:
+    chdir: "/home/{{ ansible_user }}/Downloads/yay"
+    creates: "/usr/bin/yay"
+  when: not yay_check.stat.exists
+
+- name: repos | Archlinux | Remove yay directory
+  tags: [ repos ]
+  ansible.builtin.file:
+    path: "~/Downloads/yay"
+    state: absent
+
+- name: repos | Archlinux | Update pacman package cache and upgrade all packages
+  tags: [ repos ]
+  become: true
+  community.general.pacman:
+    update_cache: true
+    upgrade: true

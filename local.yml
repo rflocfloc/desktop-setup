@@ -1,18 +1,57 @@
 - hosts: localhost
   connection: local
   gather_facts: true
+
+  # vars of imported tasks
+  vars:
+    nerdfonts_path: "/usr/local/share/fonts"
+    nerdfonts_to_install:
+      - NerdFontsSymbolsOnly
+      - FiraCode
+      - Overpass
+      - JetBrainsMono
+
   pre_tasks:
-    - name: pre-run | update package cache
-      tags: always
+    - name: Update package cache
+      tags: [ always ]
       become: true
       ansible.builtin.package: update_cache=yes
       changed_when: false
 
+    - name: System bootstrap (repos and updates)
+      tags: [ repos ]
+      ansible.builtin.include_tasks:
+        file: "{{ item }}"
+      with_first_found:
+        - files:
+          - "tasks/repos_{{ ansible_distribution }}.yml"
+          - "tasks/repos_{{ ansible_os_family }}.yml"
+
   roles:
+    - role: git
+      tags: [ git,vcs ]
+      vars:
+        git_manage_project_dirs: true
+        git_project_dirs:
+          - "~/Projects"
+          - "~/Projects/Personal"
+          - "~/Projects/Work"
+
     - role: dotfiles
       tags: [ dotfiles ]
       vars:
         dotfiles_github_repo: "git@github.com-personal:rflocfloc/dotfiles.git"
         dotfiles_github_ssh_key: "~/.ssh/id_ed25519_github.pub"
         dotfiles_stow_manage: true
+
+  tasks:
+    - ansible.builtin.import_tasks: "tasks/flatpak.yml"
+      tags: [ flatpak ]
+
+    - ansible.builtin.import_tasks: "tasks/nerdfonts.yml"
+      tags: [ nerdfonts ]
+
+    - ansible.builtin.import_tasks: "tasks/starship.yml"
+      tags: [ starship ]
+
 

@@ -1,0 +1,42 @@
+---
+- name: repos | Fedora | Ensure max_parallel_downloads is set in dnf.conf
+  tags: [ repos ]
+  become: true
+  ansible.builtin.lineinfile:
+    path: /etc/dnf/dnf.conf
+    regexp: '^max_parallel_downloads='
+    line: 'max_parallel_downloads=20'
+    insertafter: '^[main]$'
+    state: present
+
+- name: repos | Fedora | Add RPM-Fusion repos
+  tags: [ repos ]
+  become: true
+  ansible.builtin.dnf:
+    name: "{{ item }}"
+    state: present
+    disable_gpg_check: true
+  loop:
+    - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    - "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+
+- name: repos | Fedora | Update packages
+  tags: [ repos ]
+  become: true
+  ansible.builtin.dnf:
+    name:
+      - "@core"
+      - "@development-tools"
+    state: latest
+    update_cache: true
+
+- name: repos | Fedora | Set non-free cisco h264
+  tags: [ repos ]
+  become: true
+  ansible.builtin.command: "dnf config-manager setopt fedora-cisco-openh264.enabled=1"
+
+- name: repos | Fedora | DNF autoremove
+  tags: [ repos ]
+  become: true
+  ansible.builtin.dnf:
+    autoremove: true

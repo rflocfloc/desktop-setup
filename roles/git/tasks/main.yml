@@ -1,0 +1,48 @@
+- name: Install git
+  become: true
+  ansible.builtin.package:
+    name: git
+    state: present
+
+- name: Modify .gitconfig
+  when: git_manage_config | bool
+  block:
+    - name: Ensure presence of gitconfig
+      ansible.builtin.stat:
+        path: ~/.gitconfig
+        follow: false
+      register: gitconfig_check
+
+    - name: Set git user-name on .gitconfig
+      ansible.builtin.lineinfile:
+        path: "~/.gitconfig"
+        regexp: '^(\s*)name\s*=\s*.*$'
+        line: '    name = "{{ git_user_name }}"'
+        create: false
+        insertafter: '^(\s*)\[user\]'
+      when: gitconfig_check.stat.exists
+
+    - name: Set git user-email on .gitconfig
+      ansible.builtin.lineinfile:
+        path: "~/.gitconfig"
+        regexp: '^(\s*)email\s*=\s*.*$'
+        line: '    email = "{{ git_user_email }}"'
+        create: false
+        insertafter: '^(\s*)\[user\]'
+      when: gitconfig_check.stat.exists
+
+    - name: Create .gitconfig is does not exists
+      ansible.builtin.template:
+        src: "gitconfig.j2"
+        dest: "~/.gitconfig"
+        mode: "644"
+      when: not gitconfig_check.stat.exists
+
+
+- name: Manage Project directories
+  when: git_manage_project_dirs | bool
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    mode: '755'
+  loop: "{{ git_project_dirs }}"

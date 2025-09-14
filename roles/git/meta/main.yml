@@ -1,0 +1,6 @@
+galaxy_info:
+  author: rflocfloc
+  description: Role to manage git config and project dirs
+  license: license (GPL-2.0-or-later, MIT, etc)
+  min_ansible_version: 2.10
+  galaxy_tags: []

@@ -1,0 +1,70 @@
+---
+- name: Ensure git is installed
+  become: true
+  ansible.builtin.package:
+    name:
+      - git
+      - wget
+    state: present
+
+- name: Clone dotfiles repo
+  ansible.builtin.git:
+    repo: "{{ dotfiles_github_repo }}"
+    dest: "{{ dotfiles_repo_path }}"
+    force: true
+    recursive: true
+    accept_hostkey: "{{ (dotfiles_github_ssh_key | default('')) | length > 0 }}"
+    key_file: "{{ dotfiles_github_ssh_key | default(omit) }}"
+
+- name: Dotfiles management (stow)
+  when: dotfiles_stow_manage | bool
+  notify:
+    - source bashrc
+  block:
+    - name: Ensure stow is installed
+      become: true
+      ansible.builtin.package:
+        name: git
+        state: present
+
+    - name: Ensure presence of .config dir
+      ansible.builtin.file:
+        path: "~/.config"
+        state: directory
+        mode: "755"
+
+    - name: Ensure presence of .bashrc.d dir
+      ansible.builtin.file:
+        path: "~/.config"
+        state: directory
+        mode: "700"
+
+    - name: Stow entire dotfiles repo directory
+      ansible.builtin.shell:
+        cmd: "stow ."
+        chdir: "{{ dotfiles_repo_path }}"
+      when: dotfiles_stow_repo | bool
+
+    - name: Find subdirectories in dotfiles repo
+      ansible.builtin.find:
+        paths: "{{ dotfiles_repo_path }}"
+        file_type: directory
+        depth: 1
+      register: found_dirs
+      when: not dotfiles_stow_repo | bool and dotfiles_stow_dirs | length == 0
+
+    - name: Set fact for dirs_to_stow from found dirs
+      ansible.builtin.set_fact:
+        dirs_to_stow: >-
+          {{ found_dirs.files
+          | map(attribute='path')
+          | map('basename')
+          | list }}
+      when: not dotfiles_stow_repo | bool and dotfiles_stow_dirs | length == 0
+
+    - name: Stow dotfiles repo by directory
+      ansible.builtin.shell:
+        cmd: "stow -R {{ item }}"
+        chdir: "{{ dotfiles_repo_path }}"
+      when: not dotfiles_stow_repo | bool
+      loop: "{{ dirs_to_stow }}"

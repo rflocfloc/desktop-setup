@@ -1,0 +1,8 @@
+---
+# dotfiles_github_repo: ""
+# dotfiles_github_ssh_key: ""
+dotfiles_repo_path: "~/.dotfiles"
+
+dotfiles_stow_manage: true
+dotfiles_stow_repo: false
+dotfiles_stow_dirs: []

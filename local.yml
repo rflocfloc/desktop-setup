@@ -1,0 +1,18 @@
+- hosts: localhost
+  connection: local
+  gather_facts: true
+  pre_tasks:
+    - name: pre-run | update package cache
+      tags: always
+      become: true
+      ansible.builtin.package: update_cache=yes
+      changed_when: false
+
+  roles:
+    - role: dotfiles
+      tags: [ dotfiles ]
+      vars:
+        dotfiles_github_repo: "git@github.com-personal:rflocfloc/dotfiles.git"
+        dotfiles_github_ssh_key: "~/.ssh/id_ed25519_github.pub"
+        dotfiles_stow_manage: true
+

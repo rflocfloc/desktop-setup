@@ -1,0 +1,8 @@
+---
+- name: Source bashrc
+  ansible.builtin.shell:
+    cmd: "source ~/.bashrc"
+  args:
+    executable: /bin/bash
+  listen: "source bashrc"
+

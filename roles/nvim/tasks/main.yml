@@ -17,7 +17,7 @@
   when:
     - not nvim_bin_setup | bool
 
-- name: Install external dependencies
+- name: Install nvim dependencies
   become: true
   ansible.builtin.package:
     name:
@@ -27,7 +27,7 @@
       - "{{ __libvterm }}"
       - lua-lpeg
       - luajit
-      - "{{ __lua-luv }}"
+      - "{{ __lua_uv }}"
       - "{{ __unibilium }}"
       - wl-clipboard
       - inotify-tools

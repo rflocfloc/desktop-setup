@@ -1,7 +1,7 @@
 ---
 __libluv: libluv-devel
 __libvterm: libvterm-devel
-__lua-luv: lua-luv
+__lua_luv: lua-luv
 __unibilium: unibilium-devel
 __fd: fd-find
 __pip: python3-pip

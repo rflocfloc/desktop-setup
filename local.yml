@@ -66,8 +66,7 @@
           - "~/Projects/Work"
 
     - name: Setup conda role
-      ansible.builtin.import_tasks:
-        name: "tasks/conda.yml"
+      ansible.builtin.import_tasks: "tasks/conda.yml"
       tags: [ conda, dev ]
       when: conda_setup | bool
 

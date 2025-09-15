@@ -51,8 +51,9 @@
     # - ansible.builtin.import_tasks: "tasks/cli.yml"
     #   tags: [ cli ]
     #
-    - name: Setup git
-      ansible.builtin.import_role: git
+    - name: Setup git role
+      ansible.builtin.import_role:
+        name: git
       tags: [ git, vcs ]
       vars:
         git_manage_config: true
@@ -64,13 +65,15 @@
           - "~/Projects/Personal"
           - "~/Projects/Work"
 
-    - name: Setup conda
-      ansible.builtin.import_tasks: "tasks/conda.yml"
+    - name: Setup conda role
+      ansible.builtin.import_tasks:
+        name: "tasks/conda.yml"
       tags: [ conda, dev ]
       when: conda_setup | bool
 
-    - name: Manage dotfiles
-      ansible.builtin.import_role: dotfiles
+    - name: Manage dotfiles role
+      ansible.builtin.import_role:
+        name: dotfiles
       tags: [ dotfiles ]
       vars:
         dotfiles_github_repo: "git@github.com-personal:rflocfloc/dotfiles.git"
@@ -78,8 +81,9 @@
         dotfiles_delete_bashrc: true
         dotfiles_stow_manage: true
 
-    - name: Setup nvim
-      ansible.builint.import_role: nvim
+    - name: Setup nvim role
+      ansible.builint.import_role:
+        name: nvim
       tags: [ nvim ]
       vars:
         nvim_bin_setup: true

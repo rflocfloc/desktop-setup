@@ -80,17 +80,21 @@
         dotfiles_delete_bashrc: true
         dotfiles_stow_manage: true
 
-    - name: Setup nvim role
-      ansible.builint.import_role:
+    - name: Setup nvim role (stable)
+      ansible.builtin.import_role:
         name: nvim
       tags: [ nvim ]
       vars:
         nvim_bin_setup: true
-        nvim_bin_version:
-          - "v0.11.4"
-          - "nightly"
-        nvim_bin_dir_path: "/opt/nvim"
-        nvim_bin_path: "/usr/local/bin/nvim"
+        nvim_bin_version: "v0.11.4"
+
+    - name: Setup nvim role (nightly)
+      ansible.builtin.import_role:
+        name: nvim
+      tags: [ nvim ]
+      vars:
+        nvim_bin_setup: true
+        nvim_bin_version: "nightly"
 
     - ansible.builtin.import_tasks: "tasks/nerdfonts.yml"
       tags: [ nerdfonts ]

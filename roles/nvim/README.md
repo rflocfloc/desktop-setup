@@ -19,14 +19,8 @@ Set to true if you want to install nvim through release binary.
 
 ```yaml
 nvim_bin_version: "v0.11.4"
-
-# List input example
-nvim_bin_version:
-  - "nightly"
-  - "v0.11.4"
 ```
-The version of release binary to download from official github repo. Here, a list can be specified. Keep in mind that the last entry will be the one available
-in system. As shown, although nightly version availabe at path specified in `nvim_bin_dir_path`, system will detect `v0.11.4` version.
+The version of release binary to download from official github repo. Nightly version available at `nigthly`.
 ```yaml
 nvim_bin_dir_path: "/opt/nvim"
 ```

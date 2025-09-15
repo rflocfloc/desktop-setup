@@ -8,14 +8,14 @@
 
 - name: Manually install nvim
   ansible.builtin.import_tasks: "_manual_install.yml"
-  when: nvim_manual_setup | bool
+  when: nvim_bin_setup | bool
 
 - name: Package manager install nvim
-  ansible.builint.package:
+  ansible.builtin.package:
     name: neovim
     state: present
   when:
-    - not nvim_manual_setup | bool
+    - not nvim_bin_setup | bool
 
 - name: Install external dependencies
   become: true

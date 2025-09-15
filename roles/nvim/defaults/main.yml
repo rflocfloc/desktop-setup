@@ -4,9 +4,9 @@ nvim_bin_version: "v0.11.4"
 nvim_bin_dir_path: "/opt/nvim"
 nvim_bin_path: "/usr/local/bin/nvim"
 
-nvim_manage_config: false
 nvim_dotfiles_github_repo: "https://github.com/rflocfloc/nvim-bootstrap.git"
 nvim_dotfiles_github_ssh_key: ""
+nvim_manual_setup: false
 nvim_config_opts:
   - vim.opt.number = true
   - vim.opt.relativenumber = true

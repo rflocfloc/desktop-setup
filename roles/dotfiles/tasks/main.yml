@@ -41,7 +41,7 @@
 
     - name: Delete .bashrc
       ansible.builtin.file:
-        paths: "~/.bashrc"
+        path: "~/.bashrc"
         state: absent
       when: dotfiles_delete_bashrc | bool
 
@@ -57,7 +57,8 @@
         file_type: directory
         depth: 1
       register: found_dirs
-      when: not dotfiles_stow_repo | bool and dotfiles_stow_dirs | length == 0
+      when:
+        - not dotfiles_stow_repo | bool
 
     - name: Set fact for dirs_to_stow from found dirs
       ansible.builtin.set_fact:
@@ -66,7 +67,8 @@
           | map(attribute='path')
           | map('basename')
           | list }}
-      when: not dotfiles_stow_repo | bool and dotfiles_stow_dirs | length == 0
+      when:
+        - not dotfiles_stow_repo | bool
 
     - name: Stow dotfiles repo by directory
       ansible.builtin.shell:

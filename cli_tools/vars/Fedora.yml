@@ -1,0 +1,6 @@
+build_essentials: "@development-tools"
+dns_utils: bind-utils
+net_tools: net-tools
+nfs_client: nfs-utils
+ssh: openssh-clients
+vim: vim-enhanced

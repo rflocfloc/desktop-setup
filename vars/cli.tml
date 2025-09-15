@@ -1,0 +1,20 @@
+# group_vars/ubuntu.yml
+fd_package: fd-find
+ripgrep_package: ripgrep
+bat_package: bat
+python_pip: python3-pip
+python_venv: python3-venv
+
+# group_vars/arch.yml
+fd_package: fd
+ripgrep_package: ripgrep
+bat_package: bat
+python_pip: python-pip
+python_venv: python
+
+# group_vars/centos.yml
+fd_package: fd-find
+ripgrep_package: ripgrep
+bat_package: bat
+python_pip: python3-pip
+python_venv: python3

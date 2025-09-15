@@ -39,7 +39,20 @@
     - ansible.builtin.import_tasks: "tasks/flatpak.yml"
       tags: [ flatpak, repos ]
 
-    - ansible.builtin.import_role: git
+    # - name: Load distribution-specific cli_utils variables
+    #   tags: [ cli ]
+    #   include_vars: "{{ item }}"
+    #   with_first_found:
+    #     - "vars/{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
+    #     - "vars/{{ ansible_distribution }}.yml"
+    #     - "vars/{{ ansible_os_family }}.yml"
+    #     - "vars/default.yml"
+    #
+    # - ansible.builtin.import_tasks: "tasks/cli.yml"
+    #   tags: [ cli ]
+    #
+    - name: Setup git
+      ansible.builtin.import_role: git
       tags: [ git, vcs ]
       vars:
         git_manage_config: true
@@ -51,11 +64,13 @@
           - "~/Projects/Personal"
           - "~/Projects/Work"
 
-    - ansible.builtin.import_tasks: "tasks/conda.yml"
+    - name: Setup conda
+      ansible.builtin.import_tasks: "tasks/conda.yml"
       tags: [ conda, dev ]
       when: conda_setup | bool
 
-    - ansible.builtin.import_role: dotfiles
+    - name: Manage dotfiles
+      ansible.builtin.import_role: dotfiles
       tags: [ dotfiles ]
       vars:
         dotfiles_github_repo: "git@github.com-personal:rflocfloc/dotfiles.git"
@@ -63,7 +78,8 @@
         dotfiles_delete_bashrc: true
         dotfiles_stow_manage: true
 
-    - ansible.builint.import_role: nvim
+    - name: Setup nvim
+      ansible.builint.import_role: nvim
       tags: [ nvim ]
       vars:
         nvim_bin_setup: true

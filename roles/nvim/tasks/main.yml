@@ -27,7 +27,7 @@
       - "{{ __libvterm }}"
       - lua-lpeg
       - luajit
-      - "{{ __lua_uv }}"
+      - "{{ __lua_luv }}"
       - "{{ __unibilium }}"
       - wl-clipboard
       - inotify-tools

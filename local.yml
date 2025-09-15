@@ -3,15 +3,22 @@
   connection: local
   gather_facts: true
 
+  ### VARS
   # vars of imported tasks
   vars:
+    nerdfonts_setup: true
     nerdfonts_path: "/usr/local/share/fonts"
     nerdfonts_to_install:
       - NerdFontsSymbolsOnly
       - FiraCode
       - Overpass
       - JetBrainsMono
+    conda_setup: true
+    conda_url: "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-{{ ansible_architecture }}.sh"
+    conda_path: "~/conda"
 
+
+  ### PRE TASKS
   pre_tasks:
     - name: Update package cache
       tags: [ always ]
@@ -19,6 +26,9 @@
       ansible.builtin.package: update_cache=yes
       changed_when: false
 
+
+  ### TASKS
+  tasks:
     - name: System bootstrap (repos and updates)
       tags: [ repos ]
       ansible.builtin.include_tasks: "{{ item }}"
@@ -26,8 +36,10 @@
         - "tasks/repos_{{ ansible_distribution }}.yml"
         - "tasks/repos_{{ ansible_os_family }}.yml"
 
-  roles:
-    - role: git
+    - ansible.builtin.import_tasks: "tasks/flatpak.yml"
+      tags: [ flatpak, repos ]
+
+    - ansible.builtin.import_role: git
       tags: [ git, vcs ]
       vars:
         git_manage_config: true
@@ -39,7 +51,11 @@
           - "~/Projects/Personal"
           - "~/Projects/Work"
 
-    - role: dotfiles
+    - ansible.builtin.import_tasks: "tasks/conda.yml"
+      tags: [ conda, dev ]
+      when: conda_setup | bool
+
+    - ansible.builtin.import_role: dotfiles
       tags: [ dotfiles ]
       vars:
         dotfiles_github_repo: "git@github.com-personal:rflocfloc/dotfiles.git"
@@ -47,7 +63,7 @@
         dotfiles_delete_bashrc: true
         dotfiles_stow_manage: true
 
-    - role: nvim
+    - ansible.builint.import_role: nvim
       tags: [ nvim ]
       vars:
         nvim_bin_setup: true
@@ -57,12 +73,9 @@
         nvim_bin_dir_path: "/opt/nvim"
         nvim_bin_path: "/usr/local/bin/nvim"
 
-  tasks:
-    - ansible.builtin.import_tasks: "tasks/flatpak.yml"
-      tags: [ flatpak, repos ]
-
     - ansible.builtin.import_tasks: "tasks/nerdfonts.yml"
       tags: [ nerdfonts ]
+      when: nerdfonts_setup | bool
 
     - ansible.builtin.import_tasks: "tasks/starship.yml"
       tags: [ starship ]

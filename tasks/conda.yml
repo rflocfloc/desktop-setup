@@ -1,14 +1,11 @@
 ---
 - name: Download miniforge_conda binary
-  tags: conda
   ansible.builtin.get_url:
     url: "{{ conda_url }}"
     dest: "~/Downloads/Miniforge3.sh"
     mode: '755'
 
 - name: Install miniforge-conda
-  tags: conda
-  register: conda_installed
   ansible.builtin.shell:
     cmd: "bash ~/Downloads/Miniforge3.sh -b -u -p {{ conda_path }}"
 

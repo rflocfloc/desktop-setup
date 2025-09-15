@@ -1,0 +1,38 @@
+---
+- name: Manually install nvim binary
+  loop: "{{ nvim_bin_version }}"
+  block:
+    - name: Ensure /opt/nvim directory exists
+      become: "{{ nvim_bin_dir_path.startswith('/') | bool }}"
+      ansible.builtin.file:
+        path: "{{ nvim_bin_dir_path }}"
+        state: directory
+        mode: '0755'
+
+    - name: Download and decompress nvim binary
+      ansible.builtin.unarchive:
+        src: "https://github.com/neovim/neovim/releases/download/{{ item }}/nvim-linux-x86_64.tar.gz"
+        dest: "/tmp/"
+        remote_src: true
+
+    - name: Move nvim binary
+      become: "{{ nvim_bin_dir_path.startswith('/') | bool }}"
+      ansible.builtin.copy:
+        src: "/tmp/nvim-linux-x86_64/"
+        dest: "{{ nvim_bin_dir_path }}/nvim-{{ item }}"
+        remote_src: true
+        mode: '0755'
+
+    - name: Ensure symlink nvim binary is not present
+      become: "{{ nvim_bin_path.startswith('/') | bool }}"
+      ansible.builtin.file:
+        path: "{{ nvim_bin_path }}"
+        state: absent
+
+    - name: Symlink nvim binary
+      become: "{{ nvim_bin_path.startswith('/') or nvim_bin_dir_path.startswith('/') | bool }}"
+      ansible.builtin.file:
+        src: "{{ nvim_bin_dir_path }}/nvim-{{ item }}/bin/nvim"
+        dest: "{{ nvim_bin_path }}"
+        state: link
+        force: true

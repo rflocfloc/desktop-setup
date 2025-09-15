@@ -1,0 +1,20 @@
+{{ ansible_managed | comment }}
+
+-- [[ Options ]]
+{% for item in nvim_config_opts %}}
+{{ item }}
+{% endfor %}
+
+-- [[ Keymaps ]]
+{% for item in nvim_config_opts %}}
+{{ item }}
+{% endfor %}
+
+-- [[ Autocommands ]]
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Highlight when yanking text',
+  group = vim.api.nvim_create_augroup("User_HighlightText", { clear = true }),
+  callback = function()
+    vim.hl.on_yank()
+  end,
+})

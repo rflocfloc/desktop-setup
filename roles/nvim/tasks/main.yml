@@ -1,0 +1,69 @@
+---
+- name: Import OS specific vars
+  ansible.builtin.include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}.yml"
+    - "{{ ansible_os_family }}.yml"
+    - "default.yml"
+
+- name: Manually install nvim
+  ansible.builtin.import_tasks: "_manual_install.yml"
+  when: nvim_manual_setup | bool
+
+- name: Package manager install nvim
+  ansible.builint.package:
+    name: neovim
+    state: present
+  when:
+    - not nvim_manual_setup | bool
+
+- name: Install external dependencies
+  become: true
+  ansible.builtin.package:
+    name:
+      - nodejs
+      - npm
+      - "{{ __libluv }}"
+      - "{{ __libvterm }}"
+      - lua-lpeg
+      - luajit
+      - "{{ __lua-luv }}"
+      - "{{ __unibilium }}"
+      - wl-clipboard
+      - inotify-tools
+      - xsel
+      - "{{ __fd }}"
+      - fzf
+      - ripgrep
+      - bat
+      - make
+      - gcc
+      - unzip
+      - wget
+      - git
+      - "{{ __pip }}"
+      - "{{ __cli_tree_sitter }}"
+    state: present
+
+- name: Add emoji support (Ubuntu)
+  become: true
+  ansible.builtin.apt:
+    name: fonts-noto-color-emoji
+    state: present
+  when: (ansible_os_family == "Debian")
+
+- name: Clone nvim dotfile repo
+  ansible.builtin.git:
+    repo: "{{ nvim_dotfiles_github_repo }}"
+    dest: ~/.config/nvim
+    force: true
+    recursive: true
+    accept_hostkey: "{{ (nvim_dotfiles_github_ssh_key | default('')) | length > 0 }}"
+    key_file: "{{ nvim_dotfiles_github_ssh_key | default(omit) }}"
+  when:
+    - nvim_dotfiles_github_repo | length > 0
+    - nvim_manage_config | bool
+
+- name: Ansible-managed nvim config setup
+  ansible.builtin.import_tasks: "_ansible_config.yml"
+  when: nvim_manage_config | bool

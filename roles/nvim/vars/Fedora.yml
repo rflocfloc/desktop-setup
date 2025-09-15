@@ -1,0 +1,8 @@
+---
+__libluv: libluv-devel
+__libvterm: libvterm-devel
+__lua-luv: lua-luv
+__unibilium: unibilium-devel
+__fd: fd-find
+__pip: python3-pip
+__cli_tree_sitter: tree-sitter-cli

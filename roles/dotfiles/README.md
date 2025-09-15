@@ -24,6 +24,10 @@ dotfiles_repo_path: "~/.dotfiles"
 ```
 Where to put your dotfiles repo, defaults to `$HOME/.dotfiles`.
 ```yaml
+dotfiles_delete_bashrc: false
+```
+Set to true to delete `~/.bashrc` before stowing dotfiles.
+```yaml
 dotfiles_stow_manage: true
 ```
 Whether to manage your repo with [stow](https://www.gnu.org/software/stow/manual/stow.html). If true, `stow` is installed and the role proceeds to stow files as specified. In particular:

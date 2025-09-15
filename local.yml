@@ -1,3 +1,4 @@
+---
 - hosts: localhost
   connection: local
   gather_facts: true
@@ -20,17 +21,18 @@
 
     - name: System bootstrap (repos and updates)
       tags: [ repos ]
-      ansible.builtin.include_tasks:
-        file: "{{ item }}"
+      ansible.builtin.include_tasks: "{{ item }}"
       with_first_found:
-        - files:
-          - "tasks/repos_{{ ansible_distribution }}.yml"
-          - "tasks/repos_{{ ansible_os_family }}.yml"
+        - "tasks/repos_{{ ansible_distribution }}.yml"
+        - "tasks/repos_{{ ansible_os_family }}.yml"
 
   roles:
     - role: git
-      tags: [ git,vcs ]
+      tags: [ git, vcs ]
       vars:
+        git_manage_config: true
+        git_user_name: "rflocfloc"
+        git_user_email: "riccardoscandino@gmail.com"
         git_manage_project_dirs: true
         git_project_dirs:
           - "~/Projects"
@@ -42,11 +44,22 @@
       vars:
         dotfiles_github_repo: "git@github.com-personal:rflocfloc/dotfiles.git"
         dotfiles_github_ssh_key: "~/.ssh/id_ed25519_github.pub"
+        dotfiles_delete_bashrc: true
         dotfiles_stow_manage: true
+
+    - role: nvim
+      tags: [ nvim ]
+      vars:
+        nvim_bin_setup: true
+        nvim_bin_version:
+          - "v0.11.4"
+          - "nightly"
+        nvim_bin_dir_path: "/opt/nvim"
+        nvim_bin_path: "/usr/local/bin/nvim"
 
   tasks:
     - ansible.builtin.import_tasks: "tasks/flatpak.yml"
-      tags: [ flatpak ]
+      tags: [ flatpak, repos ]
 
     - ansible.builtin.import_tasks: "tasks/nerdfonts.yml"
       tags: [ nerdfonts ]
@@ -54,4 +67,5 @@
     - ansible.builtin.import_tasks: "tasks/starship.yml"
       tags: [ starship ]
 
-
+    - ansible.builtin.import_tasks: "tasks/ghostty.yml"
+      tags: [ ghostty ]

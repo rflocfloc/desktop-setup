@@ -1,0 +1,12 @@
+---
+- name: Ensure nvim config directory exists
+  ansible.builtin.file:
+    path: ~/.config/nvim
+    state: directory
+    mode: "755"
+
+- name: Generate nvim init.lua
+  ansible.builtin.template:
+    src: init.lua.j2
+    dest: ~/.config/nvim/init.lua
+    mode: "755"

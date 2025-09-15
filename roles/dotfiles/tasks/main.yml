@@ -39,6 +39,12 @@
         state: directory
         mode: "700"
 
+    - name: Delete .bashrc
+      ansible.builtin.file:
+        paths: "~/.bashrc"
+        state: absent
+      when: dotfiles_delete_bashrc | bool
+
     - name: Stow entire dotfiles repo directory
       ansible.builtin.shell:
         cmd: "stow ."

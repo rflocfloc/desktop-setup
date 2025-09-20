@@ -1,5 +1,5 @@
 ---
-- name: repos | Fedora | Ensure max_parallel_downloads is set in dnf.conf
+- name: "repos: Fedora | Ensure max_parallel_downloads is set in dnf.conf"
   tags: [ repos ]
   become: true
   ansible.builtin.lineinfile:
@@ -9,7 +9,7 @@
     insertafter: '^[main]$'
     state: present
 
-- name: repos | Fedora | Add RPM-Fusion repos
+- name: "repos: Fedora | Add RPM-Fusion repos"
   tags: [ repos ]
   become: true
   ansible.builtin.dnf:
@@ -20,7 +20,7 @@
     - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
     - "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
 
-- name: repos | Fedora | Update packages
+- name: "repos: Fedora | Update packages"
   tags: [ repos ]
   become: true
   ansible.builtin.dnf:
@@ -30,12 +30,21 @@
     state: latest
     update_cache: true
 
-- name: repos | Fedora | Set non-free cisco h264
+- name: "repos: Fedora | Set non-free cisco h264"
   tags: [ repos ]
   become: true
   ansible.builtin.command: "dnf config-manager setopt fedora-cisco-openh264.enabled=1"
 
-- name: repos | Fedora | DNF autoremove
+- name: "repos: Fedora | Add terra-release packages"
+  tags: [ repos ]
+  become: true
+  ansible.builtin.dnf:
+    name: terra-release
+    state: present
+    enablerepo: 'terra,https://repos.fyralabs.com/terra$releasever'
+    disable_gpg_check: true
+
+- name: "repos: Fedora | DNF autoremove"
   tags: [ repos ]
   become: true
   ansible.builtin.dnf:

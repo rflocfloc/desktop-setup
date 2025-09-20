@@ -1,5 +1,5 @@
 ---
-- name: repos | Debian | Update packages
+- name: "repos: Debian | Update packages"
   tags: [ repos ]
   become: true
   ansible.builtin.apt:
@@ -7,7 +7,7 @@
     state: present
     update_cache: true
 
-- name: repos | Debian | APT autoremove
+- name: "repos: Debian | APT autoremove"
   tags: [ repos ]
   become: true
   ansible.builtin.apt:

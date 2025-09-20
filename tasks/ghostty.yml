@@ -5,7 +5,8 @@
     host: copr.fedorainfracloud.org
     state: enabled
     name: scottames/ghostty
-  when: ansible_distribution == "Fedora"
+  when:
+    ansible_distribution == "Fedora"
 
 - name: "ghostty: Install ghostty"
   become: true

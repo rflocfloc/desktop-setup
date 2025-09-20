@@ -1,13 +1,13 @@
 ---
-- name: Add ghostty copr (DNF)
+- name: "ghostty: Add ghostty copr (DNF)"
   become: true
   community.general.copr:
     host: copr.fedorainfracloud.org
     state: enabled
-    name: pgdev/ghostty
+    name: scottames/ghostty
   when: ansible_distribution == "Fedora"
 
-- name: Install ghostty
+- name: "ghostty: Install ghostty"
   become: true
   ansible.builtin.package:
     name: ghostty
@@ -16,7 +16,7 @@
     - ansible_distribution == "Fedora"
     - ansible_distribution == "Archlinux"
 
-- name: Install ghostty (SNAP)
+- name: "ghostty: Install ghostty (SNAP)"
   community.general.snap:
     name: ghostty
     state: present

@@ -39,18 +39,9 @@
     - ansible.builtin.import_tasks: "tasks/flatpak.yml"
       tags: [ flatpak, repos ]
 
-    # - name: Load distribution-specific cli_utils variables
-    #   tags: [ cli ]
-    #   include_vars: "{{ item }}"
-    #   with_first_found:
-    #     - "vars/{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yml"
-    #     - "vars/{{ ansible_distribution }}.yml"
-    #     - "vars/{{ ansible_os_family }}.yml"
-    #     - "vars/default.yml"
-    #
-    # - ansible.builtin.import_tasks: "tasks/cli.yml"
-    #   tags: [ cli ]
-    #
+    - name: Flush handlers
+      ansible.builtin.meta: flush_handlers
+
     - name: Setup git role
       ansible.builtin.import_role:
         name: git

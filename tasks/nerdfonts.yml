@@ -1,11 +1,11 @@
 ---
-- name: Ensure fonts directory exists
+- name: "nerdfonts: Ensure fonts directory exists"
   become: true
   ansible.builtin.file:
     path: "{{ nerdfonts_path }}"
     state: directory
 
-- name: Install required packages
+- name: "nerdfonts: Install required packages"
   become: true
   ansible.builtin.package:
     name:
@@ -13,7 +13,7 @@
       - unzip
     state: present
 
-- name: Download and extract Nerd Fonts
+- name: "nerdfonts: Download and extract Nerd Fonts"
   become: true
   ansible.builtin.unarchive:
     src: "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/{{ item }}.zip"
@@ -21,6 +21,6 @@
     remote_src: true
   loop: "{{ nerdfonts_to_install }}"
 
-- name: Update font cache
+- name: "nerdfonts: Update font cache"
   become: true
   ansible.builtin.command: "fc-cache -f"

@@ -1,25 +1,25 @@
 ---
-- name: Download miniforge_conda binary
+- name: "conda: Download miniforge_conda binary"
   ansible.builtin.get_url:
     url: "{{ conda_url }}"
     dest: "~/Downloads/Miniforge3.sh"
     mode: '755'
 
-- name: Install miniforge-conda
+- name: "conda: Install miniforge-conda"
   ansible.builtin.shell:
     cmd: "bash ~/Downloads/Miniforge3.sh -b -u -p {{ conda_path }}"
 
-- name: Remove auto generated condarc
+- name: "conda: Remove auto generated condarc"
   ansible.builtin.file:
     path: "~/.condarc"
     state: absent
 
-- name: Remove miniforge_conda binary
+- name: "conda: Remove miniforge_conda binary"
   ansible.builtin.file:
     path: "~/Downloads/Miniforge3.sh"
     state: absent
 
-- name: Source bashrc
+- name: "conda: Source bashrc"
   ansible.builtin.shell:
     cmd: "source ~/.bashrc"
   args:

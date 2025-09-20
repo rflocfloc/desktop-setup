@@ -1,12 +1,12 @@
 ---
-- name: flatpak | Install Flatpak
+- name: "flatpak: Install Flatpak"
   become: true
   ansible.builtin.package:
     name:
       - flatpak
     state: present
 
-- name: flatpak | Install Flatpak plugin (Ubuntu)
+- name: "flatpak: Install Flatpak store plugin (Ubuntu)"
   become: true
   ansible.builtin.apt:
     update_cache: true
@@ -15,7 +15,7 @@
     state: present
   when: ansible_os_family == "Debian"
 
-- name: flatpak | Add the FlatHub remote
+- name: "flatpak: Add the FlatHub remote"
   become: true
   community.general.flatpak_remote:
     name: "flathub"

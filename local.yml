@@ -89,10 +89,50 @@
     - ansible.builtin.import_tasks: "tasks/starship.yml"
       tags: [ starship ]
 
-    - ansible.builtin.import_tasks: "tasks/ghostty.yml"
-      tags: [ ghostty ]
+    # - ansible.builtin.import_tasks: "tasks/ghostty.yml"
+    #   tags: [ ghostty ]
 
     - name: Install cli tools
       ansible.builtin.import_role:
         name: cli_tools
       tags: [ cli, software ]
+
+    - name: Install flatpak apps
+      tags: [ flatpak, software ]
+      community.general.flatpak:
+        state: present
+        remote: flathub
+        name: "{{ item }}"
+      loop:
+        - io.github.kolunmi.Bazaar
+        - com.mattjakeman.ExtensionManager
+        - com.github.tchx84.Flatseal
+        - io.github.flattool.Warehouse
+        - de.haeckerfelix.Fragments
+        - it.mijorus.gearlever
+        - io.github.vmkspv.netsleuth
+        - net.nokyan.Resources
+        - com.bitwarden.desktop
+        - app.zen_browser.zen
+        - org.inkscape.Inkscape
+        - org.gimp.GIMP
+        - md.obsidian.Obsidian
+        - org.gnome.gitlab.somas.Apostrophe
+        - org.telegram.desktop
+        - com.bambulab.BambuStudio
+
+    - name: Download AppImages
+      tags: [ appimage, software ]
+      ansible.builtin.get_url:
+        url: "{{ item.url }}"
+        dest: "{{ item.dest }}"
+        mode: '755'
+      loop_control:
+        label: "Appimage at: {{ item.dest }}"
+      loop:
+        - url: "https://github.com/vial-kb/vial-gui/releases/download/v0.7.3/Vial-v0.7.3-x86_64.AppImage"
+          dest: "~/Downloads/Vial-v0.7.3-x86_64.AppImage"
+        - url: "https://github.com/FreeCAD/FreeCAD/releases/download/1.0.1/FreeCAD_1.0.1-conda-Linux-x86_64-py311.AppImage"
+          dest: "~/Downloads/FreeCAD_1.0.1-conda-Linux-x86_64-py311.AppImage"
+        - url: "https://github.com/pkgforge-dev/ghostty-appimage/releases/download/v1.1.3/Ghostty-1.1.3-x86_64.AppImage"
+          dest: "~/Downloads/Ghostty-1.1.3-x86_64.AppImage"

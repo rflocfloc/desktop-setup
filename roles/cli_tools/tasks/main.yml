@@ -15,3 +15,16 @@
   ansible.builtin.set_fact:
     cli_tools_dev_list: "{{ __cli_tools_dev_list | difference(cli_tools_excluded_packages) }}"
   when: cli_tools_dev_list is not defined
+
+- name: Install packages lists
+  ansible.builtin.include_tasks: "install_packages.yml"
+  vars:
+    __cli_tools_package_list: "{{ item.list }}"
+    __cli_tools_package_category: "{{ item.category }}"
+  loop:
+    - {list: "{{cli_tools_admin_list}}", category: "admin"}
+    - {list: "{{cli_tools_dev_list}}", category: "development"}
+    - {list: "{{cli_tools_extra_packages}}", category: "extras"}
+  when:
+    - "{{ item.list is defined }}"
+    - "{{ item.list | length > 0}}"

@@ -22,7 +22,6 @@ __cli_tools_admin_list:
   - tree
   - ncdu
   - lsof
-  - sftp
   - sshfs
 
 __cli_tools_dev_list:

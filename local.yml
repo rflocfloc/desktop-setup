@@ -39,6 +39,11 @@
     - ansible.builtin.import_tasks: "tasks/flatpak.yml"
       tags: [ flatpak, repos ]
 
+    - name: Install cli tools
+      ansible.builtin.import_role:
+        name: cli_tools
+      tags: [ cli, software ]
+
     - name: Flush handlers
       ansible.builtin.meta: flush_handlers
 
@@ -61,9 +66,8 @@
         name: dotfiles
       tags: [ dotfiles ]
       vars:
-        dotfiles_github_repo: "git@github.com-personal:rflocfloc/dotfiles.git"
+        dotfiles_github_repo: "git@github.com:rflocfloc/dotfiles.git"
         dotfiles_github_ssh_key: "~/.ssh/id_ed25519_github.pub"
-        dotfiles_delete_bashrc: true
         dotfiles_stow_manage: true
 
     - name: Setup nvim role (stable)
@@ -89,10 +93,6 @@
     - ansible.builtin.import_tasks: "tasks/starship.yml"
       tags: [ starship ]
 
-    - name: Install cli tools
-      ansible.builtin.import_role:
-        name: cli_tools
-      tags: [ cli, software ]
 
     - name: Install flatpak apps
       tags: [ flatpak, software ]

@@ -2,9 +2,9 @@
 - name: Import OS specific vars
   ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
+    - "{{ ansible_os_family + '-' + ansible_distribution_major_version }}.yml"
     - "{{ ansible_distribution }}.yml"
     - "{{ ansible_os_family }}.yml"
-    - "default.yml"
 
 - name: Manually install nvim
   ansible.builtin.import_tasks: "_manual_install.yml"

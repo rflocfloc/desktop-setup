@@ -89,9 +89,6 @@
     - ansible.builtin.import_tasks: "tasks/starship.yml"
       tags: [ starship ]
 
-    # - ansible.builtin.import_tasks: "tasks/ghostty.yml"
-    #   tags: [ ghostty ]
-
     - name: Install cli tools
       ansible.builtin.import_role:
         name: cli_tools
@@ -119,7 +116,11 @@
         - md.obsidian.Obsidian
         - org.gnome.gitlab.somas.Apostrophe
         - org.telegram.desktop
+        - com.discordapp.Discord
         - com.bambulab.BambuStudio
+
+    # - ansible.builtin.import_tasks: "tasks/ghostty.yml"
+    #   tags: [ ghostty ]
 
     - name: Download AppImages
       tags: [ appimage, software ]

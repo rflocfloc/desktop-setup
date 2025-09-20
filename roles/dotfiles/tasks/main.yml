@@ -27,7 +27,7 @@
     - name: Ensure stow is installed
       become: true
       ansible.builtin.package:
-        name: git
+        name: stow
         state: present
 
     - name: Ensure presence of .config dir

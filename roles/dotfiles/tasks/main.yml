@@ -16,6 +16,7 @@
     accept_hostkey: "{{ (dotfiles_github_ssh_key | default('')) | length > 0 }}"
     key_file: "{{ dotfiles_github_ssh_key | default(omit) }}"
   when:
+    - dotfiles_github_repo is defined
     - dotfiles_github_repo | length > 0
 
 - name: Dotfiles management (stow)

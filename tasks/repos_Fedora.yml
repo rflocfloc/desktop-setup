@@ -35,13 +35,12 @@
   become: true
   ansible.builtin.command: "dnf config-manager setopt fedora-cisco-openh264.enabled=1"
 
-- name: "repos: Fedora | Add terra-release packages"
+- name: "repos: Fedora | Install terra-release from URL"
   tags: [ repos ]
   become: true
   ansible.builtin.dnf:
-    name: terra-release
+    name: "https://repos.fyralabs.com/terra{{ ansible_distribution_major_version }}/terra-release-{{ ansible_distribution_major_version }}-1.noarch.rpm"
     state: present
-    enablerepo: 'terra,https://repos.fyralabs.com/terra$releasever'
     disable_gpg_check: true
 
 - name: "repos: Fedora | DNF autoremove"

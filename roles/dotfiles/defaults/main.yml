@@ -4,6 +4,6 @@
 dotfiles_repo_path: "~/.dotfiles"
 
 dotfiles_delete_bashrc: false
-dotfiles_stow_manage: true
+dotfiles_stow_manage: false
 dotfiles_stow_repo: false
 dotfiles_stow_dirs: []

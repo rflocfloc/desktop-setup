@@ -1,0 +1,8 @@
+---
+cli_tools_admin_packages: true
+cli_tools_basic_dev_packages: true
+
+cli_tools_extra_packages: []
+cli_tools_excluded_packages: []
+
+cli_tools_state: present

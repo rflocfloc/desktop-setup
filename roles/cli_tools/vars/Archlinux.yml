@@ -1,0 +1,50 @@
+---
+__cli_tools_admin_list:
+  - htop
+  - iftop
+  - iotop
+  - nethogs
+  - nmon
+  - sysstat
+  - psmisc
+  - procps-ng
+  - util-linux
+  - net-tools
+  - nfs-utils
+  - bind
+  - tcpdump
+  - nmap
+  - traceroute
+  - whois
+  - curl
+  - wget
+  - rsync
+  - tree
+  - ncdu
+  - lsof
+  - openssh
+  - sshfs
+
+__cli_tools_dev_list:
+  - base-devel
+  - make
+  - gcc
+  - git
+  - vim
+  - nano
+  - tmux
+  - screen
+  - patch
+  - diffutils
+  - rclone
+  - fzf
+  - ripgrep
+  - fd
+  - jq
+  - yq
+  - bat
+  - zoxide
+  - dust
+  - procs
+  - hyperfine
+  - hexyl

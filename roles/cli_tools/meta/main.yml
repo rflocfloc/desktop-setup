@@ -1,0 +1,8 @@
+---
+galaxy_info:
+  author: rflocfloc
+  description: Role for installing various cli tools
+  license: license (GPL-2.0-or-later, MIT, etc)
+  min_ansible_version: 2.10
+  galaxy_tags: []
+dependencies: []

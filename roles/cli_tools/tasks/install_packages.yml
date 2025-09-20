@@ -1,0 +1,13 @@
+- name: install_packages | Install {{ __cli_tools_package_category }} packages
+  become: true
+  ansible.builtin.package:
+    update_cache: true
+    name: "{{ __cli_tools_package_list }}"
+    state: "{{ cli_tools_state }}"
+  register: __cli_tools_install_result
+
+- name: install_packages | Display installed {{ __cli_tools_package_category }} packages
+  ansible.builtin.debug:
+    msg: "Successfully installed {{ __cli_tools_package_category }} packages: {{ __cli_tools_package_list | join(', ') }}"
+    verbosity: 1
+  when: __cli_tools_install_result is changed

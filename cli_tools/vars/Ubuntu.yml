@@ -1,6 +1,0 @@
-build_essentials: build-essentials
-dns_utils: dnsutils
-net_tools: net-tools
-nfs_client: nfs-common
-ssh: openssh-client
-vim: vim
